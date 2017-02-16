@@ -57,7 +57,7 @@ config HUDSON_LEGACY_FREE
 
 config AGESA_BINARY_PI_FILE
 	string
-	default "3rdparty/blobs/mainboard/pcengines/apu2/AGESA.bin"
+	default "3rdparty/blobs/pi/amd/00730F01/FT3b/AGESA.bin"
 
 choice
 	prompt "J19 pins 1-10"
