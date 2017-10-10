@@ -159,11 +159,7 @@ ramstage-libs += $(agesa_output_path)/libagesa.a
 
 #######################################################################
 
-#cbfs-files-$(CONFIG_CPU_AMD_AGESA_BINARY_PI) += CONFIG_AGESA_CBFS_NAME
-#$(CONFIG_AGESA_CBFS_NAME)-file := $(CONFIG_AGESA_BINARY_PI_FILE)
-#$(CONFIG_AGESA_CBFS_NAME)-type := raw
-#$(CONFIG_AGESA_CBFS_NAME)-position := $(CONFIG_AGESA_BINARY_PI_LOCATION)
-
+ifeq ($(CONFIG_VBOOT),y)
 PHONY+=add_agesa
 INTERMEDIATE+=add_agesa
 
@@ -171,5 +167,14 @@ add_agesa: $(obj)/coreboot.pre
 	printf "    DD         Adding AGESA\n"
 	dd if=$(CONFIG_AGESA_BINARY_PI_FILE) \
 		of=$(obj)/coreboot.pre conv=notrunc bs=1 seek=6291456 >/dev/null 2>&1
+
+else
+
+cbfs-files-$(CONFIG_CPU_AMD_AGESA_BINARY_PI) += $(CONFIG_AGESA_CBFS_NAME)
+$(CONFIG_AGESA_CBFS_NAME)-file := $(CONFIG_AGESA_BINARY_PI_FILE)
+$(CONFIG_AGESA_CBFS_NAME)-type := raw
+$(CONFIG_AGESA_CBFS_NAME)-position := $(CONFIG_AGESA_BINARY_PI_LOCATION)
+
+endif
 
 endif
