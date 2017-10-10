@@ -48,6 +48,12 @@ static const struct {
 
 static const struct {
 	u8 buffer[12];
+} tpm2_startup_cmd = {
+	{0x80, 0x01, 0x0, 0x0, 0x0, 0xc, 0x0, 0x0, 0x01, 0x44, 0x0, 0x0 }
+};
+
+static const struct {
+	u8 buffer[12];
 } tpm_deactivate_cmd = {
 	{0x0, 0xc1, 0x0, 0x0, 0x0, 0xc, 0x0, 0x0, 0x0, 0x99, 0x0, 0x3 }
 };
@@ -229,9 +235,15 @@ void init_tpm(int s3resume)
 			return;
 		}
 	} else {
-		printk(BIOS_SPEW, "TPM: Startup\n");
-		result = TlclSendReceive(tpm_startup_cmd.buffer,
-					response, sizeof(response));
+		if (IS_ENABLED(CONFIG_TPM2)) {
+			printk(BIOS_SPEW, "TPM2: Startup\n");
+			result = TlclSendReceive(tpm2_startup_cmd.buffer,
+						response, sizeof(response));
+		} else {
+			printk(BIOS_SPEW, "TPM: Startup\n");
+			result = TlclSendReceive(tpm_startup_cmd.buffer,
+						response, sizeof(response));
+		}
 	}
 
 	tis_close();
