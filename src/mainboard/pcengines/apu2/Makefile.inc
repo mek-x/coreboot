@@ -16,10 +16,13 @@
 romstage-y += BiosCallOuts.c
 romstage-y += OemCustomize.c
 romstage-y += gpio_ftns.c
+romstage-$(CONFIG_VBOOT) += vboot.c
 
 ramstage-y += BiosCallOuts.c
 ramstage-y += OemCustomize.c
 ramstage-y += gpio_ftns.c
+
+verstage-$(CONFIG_VBOOT) += vboot.c
 
 ## DIMM SPD for on-board memory
 SPD_BIN = $(obj)/spd.bin

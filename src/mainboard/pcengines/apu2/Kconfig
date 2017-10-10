@@ -33,6 +33,15 @@ config BOARD_SPECIFIC_OPTIONS # dummy
 	select MAINBOARD_HAS_LPC_TPM
 	select MAINBOARD_HAS_TPM2
 
+config VBOOT
+	select VBOOT_STARTS_IN_ROMSTAGE
+	select AMDFW_OUTSIDE_CBFS
+
+config FMDFILE
+	string
+	depends on VBOOT
+	default "src/mainboard/$(CONFIG_MAINBOARD_DIR)/vboot.fmd"
+
 config MAINBOARD_DIR
 	string
 	default pcengines/apu2
